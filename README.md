@@ -150,7 +150,3 @@ Uses Try-Catch-Finally:
 
 ---
 
-## Author
-
-Shruti Gunasekaran  
-AI Engineer | RPA Developer | Backend Engineer
