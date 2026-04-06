@@ -2,150 +2,132 @@
 
 A UiPath RPA bot that reads employee data from an Excel file, categorizes employees based on salary thresholds, generates a formatted report with summary metrics, and logs execution details.
 
+---
+
 ## What It Does
 
 1. Reads employee data from `employees.xlsx` (Emp ID, Name, Department, City, Salary)
-2. Validates salary data and categorizes each employee as **High Earner**, **Standard**, or **Invalid Salary** based on a configurable threshold (default: ₹50,000)
-3. Adds a "Category" column to the data
+2. Validates salary data and categorizes each employee as **High Earner**, **Standard**, or **Invalid Salary**
+3. Adds a "Category" column
 4. Generates `output_report.xlsx` with two sheets:
    - **Report** — Full employee data with category column
-   - **Summary** — Metrics including total count, high earners, standard, invalid, threshold used, run date, and file paths
-5. Applies professional formatting via VBA (dark teal headers, gold column bars, alternating row colors, color-coded categories)
-6. Creates a timestamped execution log file (`execution_log_DD-MM-YYYY.txt`)
+   - **Summary** — Metrics including totals and run details
+5. Applies professional Excel formatting via VBA
+6. Creates a timestamped execution log file
 7. Displays a summary message box on completion
+
+---
 
 ## Prerequisites
 
 | Requirement | Version |
-|---|---|
+|------------|--------|
 | UiPath Studio | Community Edition 2023.10+ |
 | Project Type | Windows (Modern Design) |
-| UiPath.Excel.Activities | **2.24.2** |
+| UiPath.Excel.Activities | 2.24.2 |
 | UiPath.System.Activities | 26.x |
 | Expression Language | VB.NET |
 
+---
+
 ## Project Structure
 
-```
-EmployeeReportGenerator/
-├── Main.xaml                          # Main workflow
-├── employees.xlsx                     # Input file (employee data)
-├── formate_employee_report.vbs        # VBA script for Excel formatting
-├── output_report.xlsx                 # Generated output (after running)
-├── execution_log_DD-MM-YYYY.txt       # Auto-generated execution log
-├── project.json                       # UiPath project config
-├── project.uiproj                     # UiPath project file
-└── entry-points.json                  # Entry point config
-```
+---
 
 ## Input File Format
 
-`employees.xlsx` must have a sheet named "Employees" with these columns:
+`employees.xlsx` must have a sheet named **Employees**
 
 | Column | Header | Example |
-|---|---|---|
+|-------|--------|--------|
 | A | Emp ID | EMP001 |
 | B | Name | Aarav Sharma |
 | C | Department | IT |
 | D | City | Chennai |
 | E | Salary (₹) | 72000 |
 
+---
+
 ## Configuration
 
-These variables can be modified in the workflow:
-
 | Variable | Default | Description |
-|---|---|---|
-| `strInputFile` | `employees.xlsx` | Input Excel file name |
-| `strOutputFile` | `output_report.xlsx` | Output Excel file name |
-| `strInputSheet` | `Employees` | Sheet name to read from |
-| `strOutputSheet` | `Report` | Sheet name for report data |
-| `dblThreshold` | `50000` | Salary threshold for High Earner classification |
-| `intSalaryColIndex` | `4` | Column index of salary (0-based) |
+|---------|--------|-------------|
+| `strInputFile` | employees.xlsx | Input Excel file |
+| `strOutputFile` | output_report.xlsx | Output Excel file |
+| `strInputSheet` | Employees | Input sheet name |
+| `strOutputSheet` | Report | Output sheet name |
+| `dblThreshold` | 50000 | Salary threshold |
+| `intSalaryColIndex` | 4 | Salary column index (0-based) |
 
-## Workflow Structure
+---
 
-```
-Main Sequence
-├── Assign: Record start time
-├── Log: Bot Started
-├── Try-Catch-Finally
-│   ├── TRY
-│   │   ├── If: Check input file exists
-│   │   │   ├── Then: Log error + Terminate
-│   │   │   └── Else: Log file found + Read Range
-│   │   ├── If: Check data has rows
-│   │   │   ├── Then: Log warning + Terminate
-│   │   │   └── Else: Continue
-│   │   ├── Invoke Code: Add "Category" column
-│   │   ├── For Each Row: Categorize employees
-│   │   │   └── Invoke Code: Parse salary + assign category
-│   │   ├── Write Range: Employee data → "Report" sheet
-│   │   ├── Invoke Code: Build summary DataTable
-│   │   ├── Write Range: Summary → "Summary" sheet
-│   │   ├── Use Excel File + Invoke VBA: Apply formatting
-│   │   ├── Log: Report saved
-│   │   ├── Message Box: Show results
-│   │   └── Log: Bot completed with duration
-│   ├── CATCH (Exception)
-│   │   ├── Message Box: Show error
-│   │   └── Log: Error details
-│   └── FINALLY
-│       └── Invoke Code: Write log file to disk
-```
+## Workflow Overview
+
+---
 
 ## Categorization Logic
 
-```
-If salary is empty or blank       → "Invalid Salary"
-If salary is not a number         → "Invalid Salary"
-If salary > threshold (₹50,000)   → "High Earner"
-If salary ≤ threshold             → "Standard"
-```
+- Salary empty → **Invalid Salary**
+- Salary not numeric → **Invalid Salary**
+- Salary > 50,000 → **High Earner**
+- Salary ≤ 50,000 → **Standard**
 
-The bot handles edge cases like currency symbols (₹), commas in numbers, and non-numeric values (N/A, TBD, etc.).
+Handles:
+- Currency symbols (₹)
+- Commas (50,000)
+- Invalid values (N/A, TBD)
+
+---
 
 ## Output
 
 ### Report Sheet
-Employee data with all original columns plus the computed "Category" column. Formatted with:
-- Dark teal title bar
-- Gold column headers
-- Alternating teal/white data rows
-- Green bold text for "High Earner", gray text for "Standard"
+- Full employee data with Category column
+- Styled formatting:
+  - Dark teal header
+  - Gold column titles
+  - Alternating row colors
+  - Highlighted categories
 
 ### Summary Sheet
+
 | Metric | Value |
-|---|---|
-| Total Employees | 15 |
-| High Earners | 9 |
-| Standard | 6 |
-| Invalid Salary | 0 |
+|-------|------|
+| Total Employees | Example: 15 |
+| High Earners | Example: 9 |
+| Standard | Example: 6 |
+| Invalid Salary | Example: 0 |
 | Threshold Used | ₹50000 |
-| Run Date | 05-Apr-2026 20:17 |
+| Run Date | Auto-generated |
 | Input File | employees.xlsx |
 | Output File | output_report.xlsx |
 
+---
+
 ## Logging
 
-The bot generates two types of logs:
+- **UiPath Output Panel** → Real-time logs
+- **Execution Log File** → Stored in project folder
 
-**UiPath Output Panel** — Real-time log messages during debug  
-**Execution Log File** — `execution_log_DD-MM-YYYY.txt` saved to the project folder with timestamped entries for every step
+---
 
 ## Error Handling
 
-The entire workflow is wrapped in a **Try-Catch-Finally** block:
-- **Try**: Main processing logic
-- **Catch**: Displays error message box + logs the exception
-- **Finally**: Always writes the execution log file, even if an error occurs
+Uses **Try-Catch-Finally**:
+
+- Try → Main execution
+- Catch → Error handling + message box
+- Finally → Always writes log file
+
+---
 
 ## How to Run
 
-1. Clone the repo or download the project
-2. Open `project.json` in UiPath Studio
-3. Ensure `employees.xlsx` is in the project folder
-4. Ensure `formate_employee_report.vbs` is in the project folder
-5. Press **F5** or click **Run**
+1. Clone or download the project
+2. Open in UiPath Studio
+3. Ensure `employees.xlsx` is present
+4. Ensure `.vbs` file is present
+5. Click **Run (F5)**
 
+---
 
