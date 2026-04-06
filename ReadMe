@@ -72,22 +72,13 @@ A UiPath RPA bot that reads employee data from an Excel file, categorizes employ
 - Salary > 50,000 → **High Earner**
 - Salary ≤ 50,000 → **Standard**
 
-Handles:
-- Currency symbols (₹)
-- Commas (50,000)
-- Invalid values (N/A, TBD)
-
 ---
 
 ## Output
 
 ### Report Sheet
 - Full employee data with Category column
-- Styled formatting:
-  - Dark teal header
-  - Gold column titles
-  - Alternating row colors
-  - Highlighted categories
+- Styled formatting with headers and highlights
 
 ### Summary Sheet
 
@@ -99,35 +90,36 @@ Handles:
 | Invalid Salary | Example: 0 |
 | Threshold Used | ₹50000 |
 | Run Date | Auto-generated |
-| Input File | employees.xlsx |
-| Output File | output_report.xlsx |
 
 ---
 
 ## Logging
 
-- **UiPath Output Panel** → Real-time logs
-- **Execution Log File** → Stored in project folder
+- UiPath Output Panel → Real-time logs  
+- Execution Log File → Stored in project folder  
 
 ---
 
 ## Error Handling
 
-Uses **Try-Catch-Finally**:
+Uses Try-Catch-Finally:
 
-- Try → Main execution
-- Catch → Error handling + message box
-- Finally → Always writes log file
+- Try → Main execution  
+- Catch → Error handling  
+- Finally → Always writes log file  
 
 ---
 
 ## How to Run
 
-1. Clone or download the project
-2. Open in UiPath Studio
-3. Ensure `employees.xlsx` is present
-4. Ensure `.vbs` file is present
-5. Click **Run (F5)**
+1. Clone or download the project  
+2. Open in UiPath Studio  
+3. Ensure `employees.xlsx` is present  
+4. Click Run (F5)  
 
 ---
 
+## Author
+
+Shruti Gunasekaran  
+AI Engineer | RPA Developer | Backend Engineer
