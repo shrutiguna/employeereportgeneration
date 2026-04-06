@@ -1,0 +1,6 @@
+﻿[20:16:12] === Bot Started ===
+[20:16:12] File found: employees.xlsx
+[20:16:13] Excel read. Rows: 15
+[20:16:17] Category column added to DataTable
+[20:16:22] Report saved to: output_report.xlsx
+[20:16:24]  Bot completed! Duration: 11.44 seconds | High Earners: 9 | Standard: 6 | Invalid: 0

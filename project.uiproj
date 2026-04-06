@@ -1,0 +1,6 @@
+{
+  "Name": "EmployeeReportGenerator",
+  "ProjectType": "Process",
+  "Description": "To read employee excel and generate salary report",
+  "MainFile": "Main.xaml"
+}
