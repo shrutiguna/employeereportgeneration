@@ -32,6 +32,18 @@ A UiPath RPA bot that reads employee data from an Excel file, categorizes employ
 
 ## Project Structure
 
+```text
+EmployeeReportGenerator/
+|-- Main.xaml
+|-- employees.xlsx
+|-- formate_employee_report.vbs
+|-- output_report.xlsx
+|-- execution_log_DD-MM-YYYY.txt
+|-- project.json
+|-- project.uiproj
+`-- entry-points.json
+```
+
 ---
 
 ## Input File Format
@@ -62,6 +74,25 @@ A UiPath RPA bot that reads employee data from an Excel file, categorizes employ
 ---
 
 ## Workflow Overview
+
+```text
+Main Sequence
+|-- Start Time Capture
+|-- Log Start
+|-- Try-Catch Block
+    |-- Validate Input File
+    |-- Read Excel Data
+    |-- Validate Data Rows
+    |-- Add Category Column
+    |-- Categorize Employees
+    |-- Write Report Sheet
+    |-- Generate Summary Sheet
+    |-- Apply Excel Formatting (VBA)
+    |-- Log Completion
+    |-- Show Message Box
+|-- Catch Errors
+|-- Finally Write Logs
+```
 
 ---
 
@@ -95,8 +126,8 @@ A UiPath RPA bot that reads employee data from an Excel file, categorizes employ
 
 ## Logging
 
-- UiPath Output Panel → Real-time logs  
-- Execution Log File → Stored in project folder  
+- UiPath Output Panel → Real-time logs
+- Execution Log File → Stored in project folder
 
 ---
 
@@ -104,18 +135,18 @@ A UiPath RPA bot that reads employee data from an Excel file, categorizes employ
 
 Uses Try-Catch-Finally:
 
-- Try → Main execution  
-- Catch → Error handling  
-- Finally → Always writes log file  
+- Try → Main execution
+- Catch → Error handling
+- Finally → Always writes log file
 
 ---
 
 ## How to Run
 
-1. Clone or download the project  
-2. Open in UiPath Studio  
-3. Ensure `employees.xlsx` is present  
-4. Click Run (F5)  
+1. Clone or download the project
+2. Open in UiPath Studio
+3. Ensure `employees.xlsx` is present
+4. Click Run (F5)
 
 ---
 
